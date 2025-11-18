@@ -40,11 +40,11 @@ Starting the Service
 
 Accessing the API
 
-Default: http://localhost:8004
+Default: http://localhost:8002
 
 Health check:
 
-    curl http://localhost:8004/health
+    curl http://localhost:8002/health
 
 Logs & Debugging
 
