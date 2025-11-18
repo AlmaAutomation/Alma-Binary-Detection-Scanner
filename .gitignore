@@ -205,3 +205,34 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+# --- Alma Automation Cache ---
+cache/
+.cache/
+alma_cache/
+tmp/
+temp/
+
+# --- Debian Packaging ---
+*.deb
+*.build
+*.buildinfo
+*.changes
+*.dsc
+*.tar.gz
+debian/.debhelper/
+debian/files
+debian/tmp/
+debian/alma-automation/
+debian/*debhelper*/
+*.substvars
+
+# --- IDE Config ---
+.vscode/
+.idea/
+
+# --- Node/npm (if frontend exists) ---
+node_modules/
+npm-debug.log
+.yarn/
+.pnpm-store/
+package-lock.json
