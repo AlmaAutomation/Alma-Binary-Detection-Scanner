@@ -98,9 +98,9 @@ Uninstallation
 
 API Documentation
 
-Swagger UI: http://localhost:8004/docs
+Swagger UI: http://localhost:8002/docs
 
-ReDoc: http://localhost:8004/redoc
+ReDoc: http://localhost:8002/redoc
 
 Architecture Overview
 
