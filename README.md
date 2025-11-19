@@ -115,4 +115,4 @@ Suite (ASOD).
 
 License
 
-Choose appropriate license (MIT, Apache-2.0, etc.)
+MIT
