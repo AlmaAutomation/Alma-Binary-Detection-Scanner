@@ -113,6 +113,8 @@ life, and empowering users with intelligent system tools. Alma Scanner
 is one core component of the Alma System Optimization & Diagnostics
 Suite (ASOD).
 
-License
-
+License:
 MIT
+
+© 2025 Alma Automation. All rights reserved.
+Alma Automation is a project developed and maintained by Possum
