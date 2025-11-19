@@ -1,5 +1,7 @@
 Alma Scanner
 
+*CURRENTLY INTENDED FOR LOCAL USE ONLY*
+
 High-Performance Binary Scanner for Alma Automation
 
 Alma Scanner is a FastAPI-powered backend service designed for
