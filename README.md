@@ -117,4 +117,3 @@ License:
 MIT
 
 © 2025 Alma Automation. All rights reserved.
-Alma Automation is a project developed and maintained by Possum
