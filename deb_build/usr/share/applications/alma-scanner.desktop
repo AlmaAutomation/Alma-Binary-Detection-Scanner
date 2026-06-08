@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Alma Scanner
+Comment=Alma System Optimization & Diagnostics - Binary Scanner
+Exec=xdg-open http://localhost:8002/app/
+Icon=utilities-system-monitor
+Terminal=false
+Categories=Utility;System;

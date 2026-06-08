@@ -1,0 +1,10 @@
+Package: alma-scanner
+Version: 1.0-6
+Section: utils
+Priority: optional
+Architecture: all
+Maintainer: Joshua Hanlin AlmaAutomation@proton.me
+Description: Alma Scanner - FastAPI backend + React frontend for binary detection
+ This installs Alma Scanner under /opt/alma-scanner and starts a systemd service
+ using a locally-created Python virtual environment.
+Depends: python3, python3-venv, python3-pip, systemd

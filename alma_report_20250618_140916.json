@@ -1,0 +1,14 @@
+{
+    "system_info": {
+        "architecture": "64bit",
+        "machine": "x86_64",
+        "cpu": "x86_64",
+        "cpu_cores": 16,
+        "os": "Linux",
+        "os_version": "#26~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Apr 17 19:20:47 UTC 2",
+        "distribution": "Ubuntu 24.04.2 LTS",
+        "ram_total_mb": 31749
+    },
+    "binary_scan_path": "ls",
+    "binaries": []
+}

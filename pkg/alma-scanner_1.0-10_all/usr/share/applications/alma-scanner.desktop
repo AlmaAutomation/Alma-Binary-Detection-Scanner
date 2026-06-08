@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Alma Scanner
+Comment=Scan system binaries and architectures
+Exec=xdg-open http://localhost:8002/app/
+Icon=utilities-terminal
+Terminal=false
+Categories=System;Utility;

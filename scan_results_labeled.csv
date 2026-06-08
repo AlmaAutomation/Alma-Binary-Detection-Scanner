@@ -1,0 +1,6 @@
+binary_id,cpu_usage,memory_usage,is_anomaly,is_actual_anomaly
+bin_001,95,85,True,True
+bin_002,78,90,True,False
+bin_003,60,60,False,True
+bin_004,45,30,False,False
+bin_005,88,91,True,True

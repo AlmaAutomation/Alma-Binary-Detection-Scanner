@@ -1,0 +1,8 @@
+Package: alma-scanner
+Version: 1.0-7
+Section: utils
+Priority: optional
+Architecture: all
+Maintainer: Joshua
+Depends: python3, python3-venv, python3-pip, libmagic1
+Description: Alma Scanner – Binary scanning dashboard (FastAPI + React)

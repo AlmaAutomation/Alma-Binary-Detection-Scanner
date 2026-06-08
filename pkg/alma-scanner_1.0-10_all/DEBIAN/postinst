@@ -1,0 +1,29 @@
+#!/bin/bash
+set -e
+
+APP_DIR="/opt/alma-scanner"
+VENV_DIR="$APP_DIR/venv"
+
+echo "==> Alma Scanner: postinst starting..."
+
+# Create venv if needed
+if [ ! -d "$VENV_DIR" ]; then
+  echo "==> Creating virtualenv at $VENV_DIR..."
+  python3 -m venv "$VENV_DIR"
+fi
+
+# Upgrade pip/setuptools/wheel in the venv
+echo "==> Upgrading pip/setuptools/wheel in venv..."
+"$VENV_DIR/bin/pip" install --upgrade pip setuptools wheel
+
+# Install app dependencies
+echo "==> Installing Python requirements..."
+"$VENV_DIR/bin/pip" install --upgrade -r "$APP_DIR/requirements.txt"
+
+# Enable + restart systemd service
+echo "==> Enabling alma-scanner.service..."
+systemctl daemon-reload || true
+systemctl enable alma-scanner.service || true
+systemctl restart alma-scanner.service || true
+
+echo "==> Alma Scanner install complete."

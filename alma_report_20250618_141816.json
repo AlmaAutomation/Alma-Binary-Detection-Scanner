@@ -1,0 +1,515 @@
+{
+    "system_info": {
+        "architecture": "64bit",
+        "machine": "x86_64",
+        "cpu": "x86_64",
+        "cpu_cores": 16,
+        "os": "Linux",
+        "os_version": "#26~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Apr 17 19:20:47 UTC 2",
+        "distribution": "Ubuntu 24.04.2 LTS",
+        "ram_total_mb": 31749
+    },
+    "binary_scan_path": "/usr/bin",
+    "binaries": [
+        {
+            "file": "strace",
+            "path": "/usr/bin/strace",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "gnome-disk-image-mounter",
+            "path": "/usr/bin/gnome-disk-image-mounter",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "pydoc3.12",
+            "path": "/usr/bin/pydoc3.12",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "fbstat",
+            "path": "/usr/bin/fbstat",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "foo2oak-wrapper",
+            "path": "/usr/bin/foo2oak-wrapper",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "colrm",
+            "path": "/usr/bin/colrm",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "l2ping",
+            "path": "/usr/bin/l2ping",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "fprintd-delete",
+            "path": "/usr/bin/fprintd-delete",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "gs",
+            "path": "/usr/bin/gs",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "ps2pdf14",
+            "path": "/usr/bin/ps2pdf14",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "runc",
+            "path": "/usr/bin/runc",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "pw-midiplay",
+            "path": "/usr/bin/pw-midiplay",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "kbxutil",
+            "path": "/usr/bin/kbxutil",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "hexdump",
+            "path": "/usr/bin/hexdump",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "oem-getlogs",
+            "path": "/usr/bin/oem-getlogs",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "pair_align",
+            "path": "/usr/bin/pair_align",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "deb-systemd-invoke",
+            "path": "/usr/bin/deb-systemd-invoke",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "peglgears.x86_64-linux-gnu",
+            "path": "/usr/bin/peglgears.x86_64-linux-gnu",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "prime-select",
+            "path": "/usr/bin/prime-select",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "passwd",
+            "path": "/usr/bin/passwd",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "codepage",
+            "path": "/usr/bin/codepage",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "prlimit",
+            "path": "/usr/bin/prlimit",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "ntfsmove",
+            "path": "/usr/bin/ntfsmove",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "aplaymidi",
+            "path": "/usr/bin/aplaymidi",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "esc-m",
+            "path": "/usr/bin/esc-m",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "rdma",
+            "path": "/usr/bin/rdma",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "snapctl",
+            "path": "/usr/bin/snapctl",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "rustc",
+            "path": "/usr/bin/rustc",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "gnome-system-monitor",
+            "path": "/usr/bin/gnome-system-monitor",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "script",
+            "path": "/usr/bin/script",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "apt-ftparchive",
+            "path": "/usr/bin/apt-ftparchive",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "remmina-gnome",
+            "path": "/usr/bin/remmina-gnome",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "ps2pdf13",
+            "path": "/usr/bin/ps2pdf13",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "routel",
+            "path": "/usr/bin/routel",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "gdk-pixbuf-csource",
+            "path": "/usr/bin/gdk-pixbuf-csource",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "glxgears.x86_64-linux-gnu",
+            "path": "/usr/bin/glxgears.x86_64-linux-gnu",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "pinentry",
+            "path": "/usr/bin/pinentry",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "x86_64-linux-gnu-gi-decompile-typelib",
+            "path": "/usr/bin/x86_64-linux-gnu-gi-decompile-typelib",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "red",
+            "path": "/usr/bin/red",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "xeglgears",
+            "path": "/usr/bin/xeglgears",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "ipcrm",
+            "path": "/usr/bin/ipcrm",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "cpio",
+            "path": "/usr/bin/cpio",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "ckbcomp",
+            "path": "/usr/bin/ckbcomp",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "ftp",
+            "path": "/usr/bin/ftp",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "gnome-help",
+            "path": "/usr/bin/gnome-help",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "byobu-config",
+            "path": "/usr/bin/byobu-config",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "pygettext3",
+            "path": "/usr/bin/pygettext3",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "basename",
+            "path": "/usr/bin/basename",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "bpftrace-aotrt",
+            "path": "/usr/bin/bpftrace-aotrt",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "debconf-set-selections",
+            "path": "/usr/bin/debconf-set-selections",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "ntfsinfo",
+            "path": "/usr/bin/ntfsinfo",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "word-list-compress",
+            "path": "/usr/bin/word-list-compress",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "containerd",
+            "path": "/usr/bin/containerd",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "gcc-ranlib",
+            "path": "/usr/bin/gcc-ranlib",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "arch",
+            "path": "/usr/bin/arch",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "lomath",
+            "path": "/usr/bin/lomath",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "sbvarsign",
+            "path": "/usr/bin/sbvarsign",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "pslog",
+            "path": "/usr/bin/pslog",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "bmtoa",
+            "path": "/usr/bin/bmtoa",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "mpris-proxy",
+            "path": "/usr/bin/mpris-proxy",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "tty",
+            "path": "/usr/bin/tty",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "dpkg-deb",
+            "path": "/usr/bin/dpkg-deb",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "airscan-discover",
+            "path": "/usr/bin/airscan-discover",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "cvt",
+            "path": "/usr/bin/cvt",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "alsatplg",
+            "path": "/usr/bin/alsatplg",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "lpr",
+            "path": "/usr/bin/lpr",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "prove",
+            "path": "/usr/bin/prove",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "git",
+            "path": "/usr/bin/git",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "rpcgen",
+            "path": "/usr/bin/rpcgen",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "mako-render",
+            "path": "/usr/bin/mako-render",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "pacote",
+            "path": "/usr/bin/pacote",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "xsetroot",
+            "path": "/usr/bin/xsetroot",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "arm2hpdl",
+            "path": "/usr/bin/arm2hpdl",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "perl",
+            "path": "/usr/bin/perl",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "byobu-launch",
+            "path": "/usr/bin/byobu-launch",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "totem-video-thumbnailer",
+            "path": "/usr/bin/totem-video-thumbnailer",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "splazers",
+            "path": "/usr/bin/splazers",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "select-editor",
+            "path": "/usr/bin/select-editor",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "getconf",
+            "path": "/usr/bin/getconf",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "brltty-tune",
+            "path": "/usr/bin/brltty-tune",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "foo2xqx-wrapper",
+            "path": "/usr/bin/foo2xqx-wrapper",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "brltty-hid",
+            "path": "/usr/bin/brltty-hid",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "xlsatoms",
+            "path": "/usr/bin/xlsatoms",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "appstreamcli",
+            "path": "/usr/bin/appstreamcli",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "jpackage",
+            "path": "/usr/bin/jpackage",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "mimetype",
+            "path": "/usr/bin/mimetype",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "podchecker",
+            "path": "/usr/bin/podchecker",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "pw-midirecord",
+            "path": "/usr/bin/pw-midirecord",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "mbim-network",
+            "path": "/usr/bin/mbim-network",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "thunderbird",
+            "path": "/usr/bin/thunderbird",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "hp-clean",
+            "path": "/usr/bin/hp-clean",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "mkdir",
+            "path": "/usr/bin/mkdir",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "ntfsfallocate",
+            "path": "/usr/bin/ntfsfallocate",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "stat",
+            "path": "/usr/bin/stat",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "pdftoppm",
+            "path": "/usr/bin/pdftoppm",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "speaker-test",
+            "path": "/usr/bin/speaker-test",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "loadkeys",
+            "path": "/usr/bin/loadkeys",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "zforce",
+            "path": "/usr/bin/zforce",
+            "architecture": "Unknown"
+        },
+        {
+            "file": "containerd-shim-runc-v2",
+            "path": "/usr/bin/containerd-shim-runc-v2",
+            "architecture": "64-bit"
+        },
+        {
+            "file": "zstdmt",
+            "path": "/usr/bin/zstdmt",
+            "architecture": "Unknown"
+        }
+    ]
+}

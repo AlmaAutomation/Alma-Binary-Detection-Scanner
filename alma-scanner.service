@@ -1,0 +1,35 @@
+[Unit]
+Description=Alma Scanner - Binary Analysis & Compatibility Platform
+Documentation=https://github.com/yourusername/alma-scanner
+After=network.target
+
+[Service]
+Type=simple
+User=alma
+WorkingDirectory=/opt/alma-scanner
+Environment="PYTHONPATH=/opt/alma-scanner/backend"
+Environment="PYTHONUNBUFFERED=1"
+Environment="LOG_LEVEL=warning"
+ExecStart=/usr/bin/python3 -m uvicorn app.main:app \
+    --host 127.0.0.1 \
+    --port 9002 \
+    --workers 4
+Restart=on-failure
+RestartSec=5s
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=alma-scanner
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/alma-scanner/data
+
+# Resource limits
+MemoryLimit=2G
+CPUQuota=80%
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,9 @@
+Package: alma-scanner
+Version: 1.0-0
+Section: utils
+Priority: optional
+Architecture: all
+Maintainer: Joshua <you@example.com>
+Depends: python3, python3-venv, ca-certificates
+Description: Alma Scanner - binary architecture & anomaly scanner
+ FastAPI backend + React UI served from /app on port 8002.
