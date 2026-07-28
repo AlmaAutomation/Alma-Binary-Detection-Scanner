@@ -37,7 +37,7 @@ function ProvenanceList({ provenance }) {
 }
 
 /** Read-only compatibility advisor explanation derived from graph/knowledge/regression layers. */
-export default function ExplorerAdvisorDetail({ advisorView }) {
+export default function ExplorerAdvisorDetail({ advisorView, aiWordingEnabled, onToggleAiWording }) {
   const [expandedId, setExpandedId] = useState(null);
   if (!advisorView) return null;
 
@@ -46,14 +46,25 @@ export default function ExplorerAdvisorDetail({ advisorView }) {
   return (
     <div className="space-y-4">
       <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 space-y-3">
-        <h2 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-          Compatibility Advisor
-        </h2>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+            Compatibility Advisor
+          </h2>
+          <label className="inline-flex items-center gap-2 text-xs text-gray-600 dark:text-gray-300">
+            <input
+              type="checkbox"
+              checked={Boolean(aiWordingEnabled)}
+              onChange={(event) => onToggleAiWording?.(event.target.checked)}
+            />
+            AI wording
+          </label>
+        </div>
+        <p className="text-[11px] text-gray-500">{advisorView.renderStatusLabel}</p>
         <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
           {advisorView.summary}
         </p>
         <p className="text-[11px] text-gray-500">
-          Deterministic explanation only — no execution recommendations.
+          Read-only explanation — no execution recommendations.
         </p>
       </div>
 

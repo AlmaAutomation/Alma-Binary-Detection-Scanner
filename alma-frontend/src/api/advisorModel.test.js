@@ -1,4 +1,5 @@
 import {
+  advisorRenderStatusLabel,
   advisorViewAvoidsPrescriptiveLanguage,
   allObservationsHaveProvenance,
   buildAdvisorView,
@@ -56,5 +57,15 @@ describe("advisorModel", () => {
   it("requires provenance on observations", () => {
     const view = buildAdvisorView(sampleExplanation);
     expect(allObservationsHaveProvenance(view)).toBe(true);
+  });
+
+  it("maps render status labels", () => {
+    expect(advisorRenderStatusLabel({ render_mode: "deterministic" })).toBe("Deterministic");
+    expect(advisorRenderStatusLabel({ render_mode: "llm" })).toBe(
+      "AI-rendered from verified Alma evidence"
+    );
+    expect(advisorRenderStatusLabel({ render_mode: "deterministic_fallback" })).toBe(
+      "AI unavailable — deterministic explanation shown"
+    );
   });
 });

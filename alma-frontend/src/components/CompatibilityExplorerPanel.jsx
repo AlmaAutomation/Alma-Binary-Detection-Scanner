@@ -358,6 +358,7 @@ export default function CompatibilityExplorerPanel() {
   const [advisorExplanation, setAdvisorExplanation] = useState(null);
   const [advisorLoading, setAdvisorLoading] = useState(false);
   const [advisorError, setAdvisorError] = useState("");
+  const [advisorAiWording, setAdvisorAiWording] = useState(false);
 
   const loadGraph = useCallback(async (mode, value, options = {}) => {
     const trimmed = (value || "").trim();
@@ -470,7 +471,7 @@ export default function CompatibilityExplorerPanel() {
     }
   }, []);
 
-  const loadAdvisor = useCallback(async (fingerprint, sessionId) => {
+  const loadAdvisor = useCallback(async (fingerprint, sessionId, render = "deterministic") => {
     const trimmed = (fingerprint || "").trim();
     const sessionTrimmed = (sessionId || "").trim();
     if (!trimmed && !sessionTrimmed) return;
@@ -479,8 +480,8 @@ export default function CompatibilityExplorerPanel() {
     setAdvisorExplanation(null);
     try {
       const data = sessionTrimmed
-        ? await fetchSessionAdvisor(sessionTrimmed)
-        : await fetchApplicationAdvisor(trimmed);
+        ? await fetchSessionAdvisor(sessionTrimmed, render)
+        : await fetchApplicationAdvisor(trimmed, sessionId, render);
       setAdvisorExplanation(data);
     } catch (err) {
       const classified = classifyAdvisorError(err);
@@ -524,7 +525,8 @@ export default function CompatibilityExplorerPanel() {
     ) {
       loadAdvisor(
         applicationFingerprint,
-        searchMode === "session" ? submittedQuery : null
+        searchMode === "session" ? submittedQuery : null,
+        advisorAiWording ? "llm" : "deterministic"
       );
     }
   }, [
@@ -533,6 +535,7 @@ export default function CompatibilityExplorerPanel() {
     applicationFingerprint,
     searchMode,
     submittedQuery,
+    advisorAiWording,
     loadAdvisor,
   ]);
 
@@ -822,7 +825,11 @@ export default function CompatibilityExplorerPanel() {
             <StateBanner tone="error" title="Advisor request failed" detail={advisorError} />
           )}
           {!advisorLoading && !advisorError && advisorView && (
-            <ExplorerAdvisorDetail advisorView={advisorView} />
+            <ExplorerAdvisorDetail
+              advisorView={advisorView}
+              aiWordingEnabled={advisorAiWording}
+              onToggleAiWording={setAdvisorAiWording}
+            />
           )}
         </>
       )}

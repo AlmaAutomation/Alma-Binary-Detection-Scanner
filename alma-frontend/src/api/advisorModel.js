@@ -83,8 +83,23 @@ export function buildAdvisorView(explanation) {
     limitations: explanation.limitations || [],
     observations,
     groupedObservations: grouped,
+    renderMode: explanation.render_mode || "deterministic",
+    fallbackReason: explanation.fallback_reason || null,
+    renderStatusLabel: advisorRenderStatusLabel(explanation),
     formatConfidence,
   };
+}
+
+/** Human-readable render status for Explorer. */
+export function advisorRenderStatusLabel(explanation) {
+  const mode = explanation?.render_mode || "deterministic";
+  if (mode === "llm") {
+    return "AI-rendered from verified Alma evidence";
+  }
+  if (mode === "deterministic_fallback") {
+    return "AI unavailable — deterministic explanation shown";
+  }
+  return "Deterministic";
 }
 
 /** True when advisor view avoids prescriptive or broken-language copy. */
