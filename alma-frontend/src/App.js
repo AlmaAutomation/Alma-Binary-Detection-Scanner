@@ -3,6 +3,8 @@ import { Routes, Route, Navigate, Link, useNavigate } from "react-router-dom";
 
 import AlmaScanDashboard from "./components/AlmaScanDashboard";
 import AIB_AlmaScanDashboard from "./components/AIB_AlmaScanDashboard";
+import CompatibilityExplorerPanel from "./components/CompatibilityExplorerPanel";
+import CompatibilityCatalogPanel from "./components/CompatibilityCatalogPanel";
 
 export default function App() {
   const navigate = useNavigate();
@@ -19,6 +21,12 @@ export default function App() {
             <Link to="/ews-analysis" className="text-emerald-600 dark:text-emerald-300 hover:underline">
               EWS + Analysis
             </Link>
+            <Link to="/explorer" className="text-teal-600 dark:text-teal-300 hover:underline">
+              Explorer
+            </Link>
+            <Link to="/catalog" className="text-teal-600 dark:text-teal-300 hover:underline">
+              Catalog
+            </Link>
           </nav>
           <button
             onClick={() => navigate("/ews-analysis")}
@@ -34,10 +42,11 @@ export default function App() {
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<AlmaScanDashboard />} />
           <Route path="/ews-analysis" element={<AIB_AlmaScanDashboard />} />
+          <Route path="/explorer" element={<CompatibilityExplorerPanel />} />
+          <Route path="/catalog" element={<CompatibilityCatalogPanel />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </main>
     </>
   );
 }
-
