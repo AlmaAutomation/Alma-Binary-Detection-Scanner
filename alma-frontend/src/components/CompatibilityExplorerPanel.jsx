@@ -8,6 +8,7 @@ import {
 } from "../api/graphClient";
 import { fetchApplicationKnowledge } from "../api/knowledgeClient";
 import { fetchApplicationRegression } from "../api/regressionClient";
+import { fetchApplicationAdvisor, fetchSessionAdvisor } from "../api/advisorClient";
 import {
   classifyGraphError,
   findConflictingEvidence,
@@ -22,9 +23,11 @@ import {
 import { buildEvidenceView } from "../api/graphEvidenceView";
 import { buildKnowledgeView, classifyKnowledgeError } from "../api/knowledgeModel";
 import { buildRegressionView, classifyRegressionError } from "../api/regressionModel";
+import { buildAdvisorView, classifyAdvisorError } from "../api/advisorModel";
 import ExplorerEvidenceDetail from "./ExplorerEvidenceDetail";
 import ExplorerKnowledgeDetail from "./ExplorerKnowledgeDetail";
 import ExplorerRegressionDetail from "./ExplorerRegressionDetail";
+import ExplorerAdvisorDetail from "./ExplorerAdvisorDetail";
 import ExplorerRecentSessions from "./ExplorerRecentSessions";
 
 const SEARCH_MODES = [
@@ -352,6 +355,9 @@ export default function CompatibilityExplorerPanel() {
   const [regressionReport, setRegressionReport] = useState(null);
   const [regressionLoading, setRegressionLoading] = useState(false);
   const [regressionError, setRegressionError] = useState("");
+  const [advisorExplanation, setAdvisorExplanation] = useState(null);
+  const [advisorLoading, setAdvisorLoading] = useState(false);
+  const [advisorError, setAdvisorError] = useState("");
 
   const loadGraph = useCallback(async (mode, value, options = {}) => {
     const trimmed = (value || "").trim();
@@ -380,6 +386,8 @@ export default function CompatibilityExplorerPanel() {
     setKnowledgeError("");
     setRegressionReport(null);
     setRegressionError("");
+    setAdvisorExplanation(null);
+    setAdvisorError("");
 
     try {
       const data =
@@ -421,6 +429,13 @@ export default function CompatibilityExplorerPanel() {
     [loadGraph]
   );
 
+  const openAdvisorForFingerprint = useCallback(
+    (fingerprint) => {
+      loadGraph("fingerprint", fingerprint, { applicationViewTab: "advisor" });
+    },
+    [loadGraph]
+  );
+
   const loadKnowledge = useCallback(async (fingerprint) => {
     const trimmed = (fingerprint || "").trim();
     if (!trimmed) return;
@@ -455,29 +470,82 @@ export default function CompatibilityExplorerPanel() {
     }
   }, []);
 
-  useEffect(() => {
-    if (viewState === "success" && searchMode === "fingerprint" && submittedQuery) {
-      loadRegression(submittedQuery);
+  const loadAdvisor = useCallback(async (fingerprint, sessionId) => {
+    const trimmed = (fingerprint || "").trim();
+    const sessionTrimmed = (sessionId || "").trim();
+    if (!trimmed && !sessionTrimmed) return;
+    setAdvisorLoading(true);
+    setAdvisorError("");
+    setAdvisorExplanation(null);
+    try {
+      const data = sessionTrimmed
+        ? await fetchSessionAdvisor(sessionTrimmed)
+        : await fetchApplicationAdvisor(trimmed);
+      setAdvisorExplanation(data);
+    } catch (err) {
+      const classified = classifyAdvisorError(err);
+      setAdvisorError(classified.message);
+    } finally {
+      setAdvisorLoading(false);
     }
-  }, [viewState, searchMode, submittedQuery, loadRegression]);
+  }, []);
+
+  const applicationFingerprint = useMemo(() => {
+    if (subgraph?.application_fingerprint) {
+      return subgraph.application_fingerprint;
+    }
+    if (searchMode === "fingerprint") {
+      return submittedQuery;
+    }
+    return null;
+  }, [subgraph, searchMode, submittedQuery]);
+
+  useEffect(() => {
+    if (viewState === "success" && applicationFingerprint) {
+      loadRegression(applicationFingerprint);
+    }
+  }, [viewState, applicationFingerprint, loadRegression]);
 
   useEffect(() => {
     if (
       viewState === "success" &&
-      searchMode === "fingerprint" &&
       applicationViewTab === "knowledge" &&
-      submittedQuery
+      applicationFingerprint
     ) {
-      loadKnowledge(submittedQuery);
+      loadKnowledge(applicationFingerprint);
     }
-  }, [viewState, searchMode, applicationViewTab, submittedQuery, loadKnowledge]);
+  }, [viewState, applicationViewTab, applicationFingerprint, loadKnowledge]);
+
+  useEffect(() => {
+    if (
+      viewState === "success" &&
+      applicationViewTab === "advisor" &&
+      (applicationFingerprint || (searchMode === "session" && submittedQuery))
+    ) {
+      loadAdvisor(
+        applicationFingerprint,
+        searchMode === "session" ? submittedQuery : null
+      );
+    }
+  }, [
+    viewState,
+    applicationViewTab,
+    applicationFingerprint,
+    searchMode,
+    submittedQuery,
+    loadAdvisor,
+  ]);
 
   useEffect(() => {
     const deepLinkSession = searchParams.get("session");
     const deepLinkFingerprint = searchParams.get("fingerprint");
     const deepLinkView = searchParams.get("view");
     if (deepLinkSession) {
-      openSessionInExplorer(deepLinkSession);
+      if (deepLinkView === "advisor") {
+        loadGraph("session", deepLinkSession, { applicationViewTab: "advisor" });
+      } else {
+        openSessionInExplorer(deepLinkSession);
+      }
       return;
     }
     if (deepLinkFingerprint) {
@@ -485,11 +553,20 @@ export default function CompatibilityExplorerPanel() {
         openKnowledgeForFingerprint(deepLinkFingerprint);
       } else if (deepLinkView === "regressions") {
         openRegressionsForFingerprint(deepLinkFingerprint);
+      } else if (deepLinkView === "advisor") {
+        openAdvisorForFingerprint(deepLinkFingerprint);
       } else {
         loadGraph("fingerprint", deepLinkFingerprint);
       }
     }
-  }, [searchParams, openSessionInExplorer, openKnowledgeForFingerprint, openRegressionsForFingerprint, loadGraph]);
+  }, [
+    searchParams,
+    openSessionInExplorer,
+    openKnowledgeForFingerprint,
+    openRegressionsForFingerprint,
+    openAdvisorForFingerprint,
+    loadGraph,
+  ]);
 
   const loadNodeDetail = useCallback(async (nodeId) => {
     setDetailLoading("node");
@@ -576,6 +653,10 @@ export default function CompatibilityExplorerPanel() {
   const regressionView = useMemo(
     () => (regressionReport ? buildRegressionView(regressionReport) : null),
     [regressionReport]
+  );
+  const advisorView = useMemo(
+    () => (advisorExplanation ? buildAdvisorView(advisorExplanation) : null),
+    [advisorExplanation]
   );
 
   return (
@@ -675,12 +756,13 @@ export default function CompatibilityExplorerPanel() {
         <StateBanner tone="error" title="Request failed" detail={stateDetail} />
       )}
 
-      {viewState === "success" && subgraph && summary && searchMode === "fingerprint" && (
+      {viewState === "success" && subgraph && summary && applicationFingerprint && (
         <div className="flex flex-wrap gap-2 items-center">
           {[
             { id: "graph", label: "Compatibility Graph" },
             { id: "knowledge", label: "Compatibility Knowledge" },
             { id: "regressions", label: "Regressions" },
+            { id: "advisor", label: "Advisor" },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -703,7 +785,7 @@ export default function CompatibilityExplorerPanel() {
         </div>
       )}
 
-      {viewState === "success" && subgraph && summary && applicationViewTab === "knowledge" && searchMode === "fingerprint" && (
+      {viewState === "success" && subgraph && summary && applicationViewTab === "knowledge" && applicationFingerprint && (
         <>
           {knowledgeLoading && (
             <StateBanner tone="loading" title="Loading compatibility knowledge…" detail={submittedQuery} />
@@ -717,7 +799,7 @@ export default function CompatibilityExplorerPanel() {
         </>
       )}
 
-      {viewState === "success" && subgraph && summary && applicationViewTab === "regressions" && searchMode === "fingerprint" && (
+      {viewState === "success" && subgraph && summary && applicationViewTab === "regressions" && applicationFingerprint && (
         <>
           {regressionLoading && (
             <StateBanner tone="loading" title="Loading compatibility regressions…" detail={submittedQuery} />
@@ -731,7 +813,21 @@ export default function CompatibilityExplorerPanel() {
         </>
       )}
 
-      {viewState === "success" && subgraph && summary && (searchMode !== "fingerprint" || applicationViewTab === "graph") && (
+      {viewState === "success" && subgraph && summary && applicationViewTab === "advisor" && applicationFingerprint && (
+        <>
+          {advisorLoading && (
+            <StateBanner tone="loading" title="Loading compatibility advisor…" detail={submittedQuery} />
+          )}
+          {advisorError && !advisorLoading && (
+            <StateBanner tone="error" title="Advisor request failed" detail={advisorError} />
+          )}
+          {!advisorLoading && !advisorError && advisorView && (
+            <ExplorerAdvisorDetail advisorView={advisorView} />
+          )}
+        </>
+      )}
+
+      {viewState === "success" && subgraph && summary && applicationViewTab === "graph" && (
         <>
           <ExplorerEvidenceDetail evidenceView={evidenceView} />
           <SubgraphSummary subgraph={subgraph} summary={summary} conflicts={conflicts} />
