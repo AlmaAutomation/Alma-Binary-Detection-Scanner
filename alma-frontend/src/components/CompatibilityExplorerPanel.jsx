@@ -24,10 +24,13 @@ import { buildEvidenceView } from "../api/graphEvidenceView";
 import { buildKnowledgeView, classifyKnowledgeError } from "../api/knowledgeModel";
 import { buildRegressionView, classifyRegressionError } from "../api/regressionModel";
 import { buildAdvisorView, classifyAdvisorError } from "../api/advisorModel";
+import { postAskAlma } from "../api/askClient";
+import { buildAskView, classifyAskError } from "../api/askModel";
 import ExplorerEvidenceDetail from "./ExplorerEvidenceDetail";
 import ExplorerKnowledgeDetail from "./ExplorerKnowledgeDetail";
 import ExplorerRegressionDetail from "./ExplorerRegressionDetail";
 import ExplorerAdvisorDetail from "./ExplorerAdvisorDetail";
+import ExplorerAskAlmaPanel from "./ExplorerAskAlmaPanel";
 import ExplorerRecentSessions from "./ExplorerRecentSessions";
 
 const SEARCH_MODES = [
@@ -359,6 +362,10 @@ export default function CompatibilityExplorerPanel() {
   const [advisorLoading, setAdvisorLoading] = useState(false);
   const [advisorError, setAdvisorError] = useState("");
   const [advisorAiWording, setAdvisorAiWording] = useState(false);
+  const [askAnswer, setAskAnswer] = useState(null);
+  const [askLoading, setAskLoading] = useState(false);
+  const [askError, setAskError] = useState("");
+  const [askAiWording, setAskAiWording] = useState(false);
 
   const loadGraph = useCallback(async (mode, value, options = {}) => {
     const trimmed = (value || "").trim();
@@ -389,6 +396,8 @@ export default function CompatibilityExplorerPanel() {
     setRegressionError("");
     setAdvisorExplanation(null);
     setAdvisorError("");
+    setAskAnswer(null);
+    setAskError("");
 
     try {
       const data =
@@ -501,6 +510,30 @@ export default function CompatibilityExplorerPanel() {
     return null;
   }, [subgraph, searchMode, submittedQuery]);
 
+  const submitAsk = useCallback(
+    async (question) => {
+      if (!applicationFingerprint) return;
+      setAskLoading(true);
+      setAskError("");
+      setAskAnswer(null);
+      try {
+        const data = await postAskAlma({
+          question,
+          applicationFingerprint,
+          sessionId: searchMode === "session" ? submittedQuery : null,
+          render: askAiWording ? "llm" : "deterministic",
+        });
+        setAskAnswer(data);
+      } catch (err) {
+        const classified = classifyAskError(err);
+        setAskError(classified.message);
+      } finally {
+        setAskLoading(false);
+      }
+    },
+    [applicationFingerprint, searchMode, submittedQuery, askAiWording]
+  );
+
   useEffect(() => {
     if (viewState === "success" && applicationFingerprint) {
       loadRegression(applicationFingerprint);
@@ -558,6 +591,8 @@ export default function CompatibilityExplorerPanel() {
         openRegressionsForFingerprint(deepLinkFingerprint);
       } else if (deepLinkView === "advisor") {
         openAdvisorForFingerprint(deepLinkFingerprint);
+      } else if (deepLinkView === "ask") {
+        loadGraph("fingerprint", deepLinkFingerprint, { applicationViewTab: "ask" });
       } else {
         loadGraph("fingerprint", deepLinkFingerprint);
       }
@@ -661,6 +696,13 @@ export default function CompatibilityExplorerPanel() {
     () => (advisorExplanation ? buildAdvisorView(advisorExplanation) : null),
     [advisorExplanation]
   );
+  const askView = useMemo(() => buildAskView(askAnswer), [askAnswer]);
+  const scopedApplicationName =
+    advisorView?.applicationName ||
+    knowledgeView?.applicationName ||
+    regressionView?.applicationName ||
+    subgraph?.nodes?.find((node) => node.node_type === "application")?.attributes?.file_path?.split("/").pop() ||
+    applicationFingerprint;
 
   return (
     <div className="p-4 max-w-6xl mx-auto space-y-6">
@@ -766,6 +808,7 @@ export default function CompatibilityExplorerPanel() {
             { id: "knowledge", label: "Compatibility Knowledge" },
             { id: "regressions", label: "Regressions" },
             { id: "advisor", label: "Advisor" },
+            { id: "ask", label: "Ask Alma" },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -832,6 +875,20 @@ export default function CompatibilityExplorerPanel() {
             />
           )}
         </>
+      )}
+
+      {viewState === "success" && subgraph && summary && applicationViewTab === "ask" && applicationFingerprint && (
+        <ExplorerAskAlmaPanel
+          applicationName={scopedApplicationName}
+          applicationFingerprint={applicationFingerprint}
+          sessionId={searchMode === "session" ? submittedQuery : null}
+          onAsk={submitAsk}
+          loading={askLoading}
+          error={askError}
+          askView={askView}
+          aiWordingEnabled={askAiWording}
+          onToggleAiWording={setAskAiWording}
+        />
       )}
 
       {viewState === "success" && subgraph && summary && applicationViewTab === "graph" && (
