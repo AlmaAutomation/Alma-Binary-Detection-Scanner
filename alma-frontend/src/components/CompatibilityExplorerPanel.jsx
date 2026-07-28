@@ -7,6 +7,7 @@ import {
   fetchSessionGraph,
 } from "../api/graphClient";
 import { fetchApplicationKnowledge } from "../api/knowledgeClient";
+import { fetchApplicationRegression } from "../api/regressionClient";
 import {
   classifyGraphError,
   findConflictingEvidence,
@@ -20,8 +21,10 @@ import {
 } from "../api/graphModel";
 import { buildEvidenceView } from "../api/graphEvidenceView";
 import { buildKnowledgeView, classifyKnowledgeError } from "../api/knowledgeModel";
+import { buildRegressionView, classifyRegressionError } from "../api/regressionModel";
 import ExplorerEvidenceDetail from "./ExplorerEvidenceDetail";
 import ExplorerKnowledgeDetail from "./ExplorerKnowledgeDetail";
+import ExplorerRegressionDetail from "./ExplorerRegressionDetail";
 import ExplorerRecentSessions from "./ExplorerRecentSessions";
 
 const SEARCH_MODES = [
@@ -346,6 +349,9 @@ export default function CompatibilityExplorerPanel() {
   const [knowledgeProfile, setKnowledgeProfile] = useState(null);
   const [knowledgeLoading, setKnowledgeLoading] = useState(false);
   const [knowledgeError, setKnowledgeError] = useState("");
+  const [regressionReport, setRegressionReport] = useState(null);
+  const [regressionLoading, setRegressionLoading] = useState(false);
+  const [regressionError, setRegressionError] = useState("");
 
   const loadGraph = useCallback(async (mode, value, options = {}) => {
     const trimmed = (value || "").trim();
@@ -372,6 +378,8 @@ export default function CompatibilityExplorerPanel() {
     setApplicationViewTab(options.applicationViewTab || "graph");
     setKnowledgeProfile(null);
     setKnowledgeError("");
+    setRegressionReport(null);
+    setRegressionError("");
 
     try {
       const data =
@@ -406,6 +414,13 @@ export default function CompatibilityExplorerPanel() {
     [loadGraph]
   );
 
+  const openRegressionsForFingerprint = useCallback(
+    (fingerprint) => {
+      loadGraph("fingerprint", fingerprint, { applicationViewTab: "regressions" });
+    },
+    [loadGraph]
+  );
+
   const loadKnowledge = useCallback(async (fingerprint) => {
     const trimmed = (fingerprint || "").trim();
     if (!trimmed) return;
@@ -422,6 +437,29 @@ export default function CompatibilityExplorerPanel() {
       setKnowledgeLoading(false);
     }
   }, []);
+
+  const loadRegression = useCallback(async (fingerprint) => {
+    const trimmed = (fingerprint || "").trim();
+    if (!trimmed) return;
+    setRegressionLoading(true);
+    setRegressionError("");
+    setRegressionReport(null);
+    try {
+      const data = await fetchApplicationRegression(trimmed);
+      setRegressionReport(data);
+    } catch (err) {
+      const classified = classifyRegressionError(err);
+      setRegressionError(classified.message);
+    } finally {
+      setRegressionLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (viewState === "success" && searchMode === "fingerprint" && submittedQuery) {
+      loadRegression(submittedQuery);
+    }
+  }, [viewState, searchMode, submittedQuery, loadRegression]);
 
   useEffect(() => {
     if (
@@ -445,11 +483,13 @@ export default function CompatibilityExplorerPanel() {
     if (deepLinkFingerprint) {
       if (deepLinkView === "knowledge") {
         openKnowledgeForFingerprint(deepLinkFingerprint);
+      } else if (deepLinkView === "regressions") {
+        openRegressionsForFingerprint(deepLinkFingerprint);
       } else {
         loadGraph("fingerprint", deepLinkFingerprint);
       }
     }
-  }, [searchParams, openSessionInExplorer, openKnowledgeForFingerprint, loadGraph]);
+  }, [searchParams, openSessionInExplorer, openKnowledgeForFingerprint, openRegressionsForFingerprint, loadGraph]);
 
   const loadNodeDetail = useCallback(async (nodeId) => {
     setDetailLoading("node");
@@ -532,6 +572,10 @@ export default function CompatibilityExplorerPanel() {
   const knowledgeView = useMemo(
     () => (knowledgeProfile ? buildKnowledgeView(knowledgeProfile) : null),
     [knowledgeProfile]
+  );
+  const regressionView = useMemo(
+    () => (regressionReport ? buildRegressionView(regressionReport) : null),
+    [regressionReport]
   );
 
   return (
@@ -632,10 +676,11 @@ export default function CompatibilityExplorerPanel() {
       )}
 
       {viewState === "success" && subgraph && summary && searchMode === "fingerprint" && (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 items-center">
           {[
             { id: "graph", label: "Compatibility Graph" },
             { id: "knowledge", label: "Compatibility Knowledge" },
+            { id: "regressions", label: "Regressions" },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -650,6 +695,11 @@ export default function CompatibilityExplorerPanel() {
               {tab.label}
             </button>
           ))}
+          {regressionView?.hasFindings && applicationViewTab !== "regressions" && (
+            <Badge tone="warning">
+              {regressionView.findings.length} regression finding(s) for latest session
+            </Badge>
+          )}
         </div>
       )}
 
@@ -663,6 +713,20 @@ export default function CompatibilityExplorerPanel() {
           )}
           {!knowledgeLoading && !knowledgeError && knowledgeView && (
             <ExplorerKnowledgeDetail knowledgeView={knowledgeView} />
+          )}
+        </>
+      )}
+
+      {viewState === "success" && subgraph && summary && applicationViewTab === "regressions" && searchMode === "fingerprint" && (
+        <>
+          {regressionLoading && (
+            <StateBanner tone="loading" title="Loading compatibility regressions…" detail={submittedQuery} />
+          )}
+          {regressionError && !regressionLoading && (
+            <StateBanner tone="error" title="Regression request failed" detail={regressionError} />
+          )}
+          {!regressionLoading && !regressionError && regressionView && (
+            <ExplorerRegressionDetail regressionView={regressionView} />
           )}
         </>
       )}
